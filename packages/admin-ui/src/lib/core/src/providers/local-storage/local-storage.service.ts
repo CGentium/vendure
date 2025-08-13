@@ -21,6 +21,13 @@ export type LocalStorageLocationBasedTypeMap = {
     shippingTestAddress: any;
 };
 
+const ADMIN_SPECIFIC_KEYS: Array<keyof LocalStorageTypeMap> = [
+    'activeTheme',
+    'dashboardWidgetLayout',
+    'activeTheme',
+    'livePreviewCollectionContents',
+];
+
 const PREFIX = 'vnd_';
 
 /**
@@ -30,7 +37,13 @@ const PREFIX = 'vnd_';
     providedIn: 'root',
 })
 export class LocalStorageService {
+    private adminId = '__global__';
     constructor(private location: Location) {}
+
+    public setAdminId(adminId?: string | null) {
+        this.adminId = adminId ?? '__global__';
+    }
+
     /**
      * Set a key-value pair in the browser's LocalStorage
      */
@@ -96,6 +109,10 @@ export class LocalStorageService {
     }
 
     private keyName(key: keyof LocalStorageTypeMap): string {
-        return PREFIX + key;
+        if (ADMIN_SPECIFIC_KEYS.includes(key)) {
+            return `${PREFIX}_${this.adminId}_${key}`;
+        } else {
+            return `${PREFIX}_${key}`;
+        }
     }
 }
