@@ -40,6 +40,7 @@ export const stripePaymentMethodHandler = new PaymentMethodHandler({
             amount: amountInMinorUnits,
             state: 'Settled' as const,
             transactionId: metadata.paymentIntentId,
+            metadata,
         };
     },
 
