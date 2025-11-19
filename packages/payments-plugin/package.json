@@ -1,6 +1,6 @@
 {
     "name": "@vendure/payments-plugin",
-    "version": "1.9.7b",
+    "version": "1.9.7",
     "license": "MIT",
     "main": "package/index.js",
     "types": "package/index.d.ts",

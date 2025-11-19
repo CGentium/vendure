@@ -44,7 +44,9 @@ export class StripeService {
                 amount: amountInMinorUnits,
                 currency: order.currencyCode.toLowerCase(),
                 customer: customerId,
-                payment_method_types: ['alipay', 'wechat_pay'],
+                automatic_payment_methods: {
+                    enabled: true,
+                },
                 metadata,
             },
             { idempotencyKey: `${order.code}_${amountInMinorUnits}` },
