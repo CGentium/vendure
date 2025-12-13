@@ -105,7 +105,7 @@ export class OrderCalculator {
             await this.applyShipping(ctx, order);
             await this.applyShippingPromotions(ctx, order, promotions);
         }
-        this.calculateOrderTotals(order, true);
+        this.calculateOrderTotals(order);
         return taxZoneChanged ? order.getOrderItems() : Array.from(updatedOrderItems);
     }
 
@@ -451,7 +451,7 @@ export class OrderCalculator {
      * that has already been done and is solely responsible for summing the
      * totals.
      */
-    public calculateOrderTotals(order: Order, calUserCredits = false) {
+    public calculateOrderTotals(order: Order) {
         let totalPrice = 0;
         let totalPriceWithTax = 0;
 
@@ -459,24 +459,13 @@ export class OrderCalculator {
             totalPrice += line.proratedLinePrice;
             totalPriceWithTax += line.proratedLinePriceWithTax;
         }
-
-        let shippingUseCredit = 0
-        let shippingUseCreditWithTax = 0
         for (const surcharge of order.surcharges) {
-            if(!calUserCredits && surcharge.description === 'UserCredits') {
-                continue;
-            }
-            if(surcharge.description === "UserCredits" && surcharge.sku == "shippingUseCredit"){
-                shippingUseCredit = surcharge.price
-                shippingUseCreditWithTax = surcharge.priceWithTax
-                continue
-            }
             totalPrice += surcharge.price;
             totalPriceWithTax += surcharge.priceWithTax;
         }
 
-        order.subTotal = (totalPrice > 0) ? totalPrice : 0;
-        order.subTotalWithTax = (totalPriceWithTax > 0) ? totalPriceWithTax : 0;
+        order.subTotal = totalPrice;
+        order.subTotalWithTax = totalPriceWithTax;
 
         let shippingPrice = 0;
         let shippingPriceWithTax = 0;

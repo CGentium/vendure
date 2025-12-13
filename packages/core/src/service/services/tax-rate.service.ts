@@ -157,7 +157,7 @@ export class TaxRateService {
      * prices.
      */
     async getApplicableTaxRate(ctx: RequestContext, zone: Zone, taxCategory: TaxCategory): Promise<TaxRate> {
-        const rate = (await this.getActiveTaxRates(ctx)).find(r => zone.id === r.zone.id);
+        const rate = (await this.getActiveTaxRates(ctx)).find(r => r.test(zone, taxCategory));
         return rate || this.defaultTaxRate;
     }
 

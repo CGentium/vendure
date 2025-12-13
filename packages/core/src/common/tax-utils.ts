@@ -25,17 +25,3 @@ export function taxPayableOn(netPrice: number, taxRatePc: number): number {
 export function grossPriceOf(netPrice: number, taxRatePc: number): number {
     return netPrice + taxPayableOn(netPrice, taxRatePc);
 }
-
-export function customTaxPayableOn(netPrice: number, taxRatePc: number) {
-    let price = Math.abs(netPrice * (taxRatePc / 100))
-    return (netPrice > 0) ? price : -price ;
-}
-
-
-/**
- * Given a net price, return the gross price (net + tax)
- */
-export function customGrossPriceOf(netPrice: number, taxRatePc: number) {
-    return netPrice + customTaxPayableOn(netPrice, taxRatePc);
-}
-
