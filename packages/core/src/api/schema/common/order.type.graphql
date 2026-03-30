@@ -37,21 +37,21 @@ type Order implements Node {
     To get a total of all OrderLines which does not account for prorated discounts, use the
     sum of `OrderLine.discountedLinePrice` values.
     """
-    subTotal: Int!
+    subTotal: Money!
     "Same as subTotal, but inclusive of tax"
-    subTotalWithTax: Int!
+    subTotalWithTax: Money!
     currencyCode: CurrencyCode!
     shippingLines: [ShippingLine!]!
-    shipping: Int!
-    shippingWithTax: Int!
+    shipping: Money!
+    shippingWithTax: Money!
     """
     Equal to subTotal plus shipping
     """
-    total: Int!
+    total: Money!
     """
     The final payable amount. Equal to subTotalWithTax plus shippingWithTax
     """
-    totalWithTax: Int!
+    totalWithTax: Money!
     """
     A summary of the taxes being applied to this Order
     """
@@ -267,7 +267,7 @@ type Surcharge implements Node {
     description: String!
     sku: String
     taxLines: [TaxLine!]!
-    price: Int!
-    priceWithTax: Int!
+    price: Money!
+    priceWithTax: Money!
     taxRate: Float!
 }

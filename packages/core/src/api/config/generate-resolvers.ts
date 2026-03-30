@@ -2,6 +2,7 @@ import { StockMovementType } from '@vendure/common/lib/generated-types';
 import { IFieldResolver, IResolvers } from 'apollo-server-express';
 import { GraphQLSchema } from 'graphql';
 import { GraphQLDateTime, GraphQLJSON } from 'graphql-scalars';
+import { GraphQLMoney } from '../common/money-scalar';
 import { GraphQLUpload } from 'graphql-upload';
 
 import { REQUEST_CONTEXT_KEY } from '../../common/constants';
@@ -82,6 +83,7 @@ export function generateResolvers(
     const commonResolvers = {
         JSON: GraphQLJSON,
         DateTime: GraphQLDateTime,
+        Money: GraphQLMoney,
         Node: dummyResolveType,
         PaginatedList: dummyResolveType,
         Upload: (GraphQLUpload as any) || dummyResolveType,

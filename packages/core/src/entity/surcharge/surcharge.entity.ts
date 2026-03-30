@@ -25,7 +25,7 @@ export class Surcharge extends VendureEntity {
     @Column()
     description: string;
 
-    @Column()
+    @Column({ type: 'bigint', transformer: { to: (v: number) => v, from: (v: string | number) => (v == null ? v : Number(v)) } })
     listPrice: number;
 
     @Column()

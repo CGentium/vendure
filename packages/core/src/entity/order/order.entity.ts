@@ -136,14 +136,14 @@ export class Order extends VendureEntity implements ChannelAware, HasCustomField
      * To get a total of all OrderLines which does not account for prorated discounts, use the
      * sum of {@link OrderLine}'s `discountedLinePrice` values.
      */
-    @Column()
+    @Column({ type: 'bigint', transformer: { to: (v: number) => v, from: (v: string | number) => (v == null ? v : Number(v)) } })
     subTotal: number;
 
     /**
      * @description
      * Same as subTotal, but inclusive of tax.
      */
-    @Column()
+    @Column({ type: 'bigint', transformer: { to: (v: number) => v, from: (v: string | number) => (v == null ? v : Number(v)) } })
     subTotalWithTax: number;
 
     /**

@@ -2,6 +2,7 @@
 scalar JSON
 scalar DateTime
 scalar Upload
+scalar Money
 
 interface PaginatedList {
     items: [Node!]!
