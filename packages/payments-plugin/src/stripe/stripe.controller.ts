@@ -120,7 +120,7 @@ export class StripeController {
 
         if (!(addPaymentToOrderResult instanceof Order)) {
             Logger.error(
-                `Error adding payment to order ${orderCode}: ${(addPaymentToOrderResult as any).message}`,
+                `Error adding payment to order ${orderCode}: ${addPaymentToOrderResult.message}`,
                 loggerCtx,
             );
             return;
