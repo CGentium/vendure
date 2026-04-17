@@ -102,13 +102,18 @@ export class StripeController {
         const paymentMethod = await this.getPaymentMethod(ctx);
         const stripePMeth = await this.stripeService.getPaymentMethod(paymentIntent.payment_method as string);
 
+        let methodSubtype: string | undefined = stripePMeth?.type;
+        if (methodSubtype === 'card' && stripePMeth?.card?.wallet?.type) {
+            methodSubtype = stripePMeth.card.wallet.type;
+        }
+
         const addPaymentToOrderResult = await this.orderService.addPaymentToOrder(ctx, orderId, {
             method: paymentMethod.code,
             metadata: {
                 paymentIntentAmountReceived: paymentIntent.amount_received,
                 paymentIntentId: paymentIntent.id,
                 public: {
-                    methodSubtype: stripePMeth?.type,
+                    methodSubtype,
                 },
             },
         });
