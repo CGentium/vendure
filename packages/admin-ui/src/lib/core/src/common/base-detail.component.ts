@@ -107,7 +107,6 @@ export abstract class BaseDetailComponent<Entity extends { id: string; updatedAt
 
     setLanguage(code: LanguageCode) {
         this.setQueryParam('lang', code);
-        this.dataService.client.setContentLanguage(code).subscribe();
     }
 
     canDeactivate(): boolean {
