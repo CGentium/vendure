@@ -6,6 +6,10 @@
         <div class="header-nav"></div>
         <div class="header-actions">
             <vdr-channel-switcher *vdrIfMultichannel></vdr-channel-switcher>
+            <button type="button" class="btn btn-sm" (click)="switchToEnglish()">
+                <clr-icon shape="world"></clr-icon>
+                {{ 'common.language' | translate }}: ENGLISH
+            </button>
             <vdr-user-menu [userName]="userName$ | async"
                            [uiLanguageAndLocale]="uiLanguageAndLocale$ | async"
                            [availableLanguages]="availableLanguages"
