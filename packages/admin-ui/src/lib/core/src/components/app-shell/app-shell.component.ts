@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Apollo } from 'apollo-angular';
 import { EMPTY, Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
@@ -30,6 +31,7 @@ export class AppShellComponent implements OnInit {
         private i18nService: I18nService,
         private modalService: ModalService,
         private localStorageService: LocalStorageService,
+        private apollo: Apollo,
     ) {}
 
     ngOnInit() {
@@ -68,6 +70,25 @@ export class AppShellComponent implements OnInit {
                     this.localStorageService.set('uiLocale', result.setUiLocale ?? undefined);
                 }
             });
+    }
+
+    switchToEnglish() {
+        const currentUrl = this.router.url;
+        this.dataService.client.setContentLanguage(LanguageCode.en).subscribe(() => {
+            const localStateFields = new Set(['uiState', 'userStatus', 'networkStatus']);
+            const activeQueries = this.apollo.client.getObservableQueries('active');
+            activeQueries.forEach(observableQuery => {
+                const def = observableQuery.options.query.definitions[0] as any;
+                const fieldName = def?.selectionSet?.selections?.[0]?.name?.value;
+                if (fieldName && !localStateFields.has(fieldName)) {
+                    this.apollo.client.cache.evict({ id: 'ROOT_QUERY', fieldName });
+                }
+            });
+            this.apollo.client.cache.gc();
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                this.router.navigate([currentUrl.split('?')[0]]);
+            });
+        });
     }
 
     logOut() {
